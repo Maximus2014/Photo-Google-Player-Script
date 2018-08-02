@@ -9,7 +9,7 @@ if (strpos($udkux, 'mydomain.com') !== false) {
 }
 $keyid = $_GET['id'];
 $shortk = (strpos($keyid, '//photos.google') !== false ? true : false);
-if ($shortk) {
+if ($shortk === 0) {
  $keyid = 'https://photos.google.com/share/'.$_GET['id'];   
 }
 $getGP = getPhotoGoogle($keyid); //id is full photos url
