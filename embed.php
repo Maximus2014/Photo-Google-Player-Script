@@ -7,7 +7,12 @@ if (strpos($udkux, 'mydomain.com') !== false) {
 } else {
 // exit("No direct linking!");
 }
-$getGP = getPhotoGoogle($_GET['id']); //id is full photos url
+$keyid = $_GET['id'];
+$shortk = (strpos($keyid, '//photos.google') !== false ? true : false);
+if ($shortk) {
+ $keyid = 'https://photos.google.com/share/'.$_GET['id'];   
+}
+$getGP = getPhotoGoogle($keyid); //id is full photos url
 $ik = json_decode($getGP, true);
 $sourcesx = "";
 $posterimg = posterImg($_GET['id']);
