@@ -12,7 +12,7 @@ $shortk = (strpos($keyid, '//photos.google') !== false ? true : false);
 if ($shortk == 0) {
  $keyid = 'https://photos.google.com/share/'.$_GET['id'];   
 }
-$getGP = getPhotoGoogle($keyid); //id is full photos url
+$getGP = getPhotoGoogle($keyid);
 $ik = json_decode($getGP, true);
 $sourcesx = "";
 $posterimg = posterImg($_GET['id']);
