@@ -40,8 +40,9 @@ foreach($dom->getElementsByTagName('img') as $element) {
 $xim = str_replace("=w214-h120-k-no","=w".$sizes[0]."-h".$sizes[1]."-no",$imgx);
 return $xim;    
 }
-function getPhotoGoogle($link){
-	$get = curl($link);
+function linkGrab($link) {
+$get = curl($link);
+	$files = "";
 	$data = explode('url\u003d', $get);
 	$url = explode('%3Dm', $data[1]);
 	$decode = urldecode($url[0]);
@@ -64,12 +65,37 @@ function getPhotoGoogle($link){
 	foreach ($linkDownload as $key => $l){
 		$files .= '{"type": "video/mp4", "label": "'.$key.'", "file": "'.$l.'"},';
 	}
-
 	if(@!$files) {
 		$files = '{"type": "video/mp4", "label": "HD", "file": "'.$decode .'=m18'.'"}';
 	}else{
 		return '['.rtrim($files, ',').']';
 	}
+
+}
+function getPhotoGoogle($link){
+if (!file_exists('cachex')) {
+    mkdir('cachex', 0777, true);
+}
+$pfdr = '/(key=)(.*)/';
+$sufds = preg_match($pfdr, $link, $mfh);
+$pkey = $mfh[2];
+$links = "";
+$pattern = '/(?<=\/photo\/)(.*)(?=\?key)/'; 
+$succefss = preg_match($pattern, $link, $maftch);
+$flname = $maftch[0];
+$filef =  "cachex/".$flname.'_'.$pkey.'.cache';
+if(file_exists($filef)) {
+    if (time()-filemtime($filef) >= 1 * 3600) {
+        $links = linkGrab($link);
+     file_put_contents($filef, $links); 
+    } else {
+      $links = file_get_contents($filef);
+    }
+} else {
+    $links = linkGrab($link);
+     file_put_contents($filef, $links);
+}
+ return $links;	
 }
 
 function fetch_value($str, $find_start = '', $find_end = ''){
